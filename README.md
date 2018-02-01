@@ -1,6 +1,6 @@
 # Masked [![Build Status](https://travis-ci.org/jxom/masked.svg?branch=master)](https://travis-ci.org/jxom/masked)
 
-> Mask sensitive values in objects/arrays
+> Mask sensitive values in a collection
 
 
 ## Install
@@ -45,7 +45,7 @@ and [here](https://github.com/jxom/masked/blob/master/test.js)
 
 #### data
 
-Type: `Object` or `Array`
+Type: `Object` or `Array<Object>`
 
 The data that you want to mask.
 
