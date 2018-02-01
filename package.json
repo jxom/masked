@@ -1,0 +1,44 @@
+{
+  "name": "huna",
+  "version": "0.0.0",
+  "description": "Mask sensitive values in objects",
+  "license": "MIT",
+  "repository": "jxom/huna",
+  "author": {
+    "name": "jxom",
+    "email": "jakemoxey@gmail.com",
+    "url": "jxom.io"
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "build": "rollup -c rollup.config.js",
+    "test": "xo && ava"
+  },
+  "files": [
+    "lib/"
+  ],
+  "main": "lib/index.js",
+  "keywords": [
+    "mask",
+    "data",
+    "sensitive"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "ava": "^0.20.0",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "1.6.1",
+    "rollup": "^0.55.2",
+    "rollup-plugin-babel": "^3.0.3",
+    "xo": "^0.18.2"
+  },
+  "xo": {
+    "space": true
+  }
+}
