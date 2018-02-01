@@ -6,14 +6,12 @@ test('it throws an Error when data is not given', t => {
   t.is(error.message, 'First parameter `data` not given');
 });
 
-test('it throws a TypeError when data is a string', t => {
-  const error = t.throws(() => masked('test'), TypeError);
-  t.is(error.message, 'Expected an object or array, got string');
+test('it returns the original data when data is a string', t => {
+  t.true(masked('somestring', 'password') === 'somestring');
 });
 
-test('it throws a TypeError when data is a number', t => {
-  const error = t.throws(() => masked(1), TypeError);
-  t.is(error.message, 'Expected an object or array, got number');
+test('it returns the original data when data is a number', t => {
+  t.true(masked(1, 'password') === 1);
 });
 
 test('it throws an Error when keys is not given', t => {
