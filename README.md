@@ -13,8 +13,6 @@ $ npm install masked
 ## Usage
 
 ```js
-const masked = require('masked');
-// or
 import masked from 'masked';
 
 const user = {
