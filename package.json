@@ -1,6 +1,6 @@
 {
   "name": "masked",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Mask sensitive values in objects",
   "license": "MIT",
   "repository": "jxom/masked",
