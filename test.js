@@ -279,3 +279,97 @@ test('it masked sensitive values (mixed)', t => {
     providerData: [{providerNumber: '********'}, {providerNumber: '********'}]
   });
 });
+
+test('it masks sensitive values in a stringified object', t => {
+  const string = JSON.stringify({
+    data: {
+      username: 'jake',
+      password: 'test',
+      email: 'jake@medipass.io'
+    }
+  });
+
+  const maskedString = masked(string, ['email', 'password']);
+
+  t.deepEqual(maskedString, JSON.stringify({
+    data: {
+      username: 'jake',
+      password: '********',
+      email: '********'
+    }
+  }));
+});
+
+test('it masks sensitive values in a stringified array of objects', t => {
+  const string = JSON.stringify([{
+    user: {
+      data: {
+        username: 'jake',
+        password: 'UnicornsAreAwesome'
+      }
+    },
+    mobile: '1800-YOU-WISH'
+  }, {
+    user: {
+      data: {
+        username: 'richard',
+        password: 'lit af'
+      }
+    },
+    mobile: '1800-GET-LIT'
+  }]);
+
+  const maskedString = masked(string, ['password', 'mobile']);
+
+  t.deepEqual(maskedString, JSON.stringify([{
+    user: {
+      data: {
+        username: 'jake',
+        password: '********'
+      }
+    },
+    mobile: '********'
+  }, {
+    user: {
+      data: {
+        username: 'richard',
+        password: '********'
+      }
+    },
+    mobile: '********'
+  }]));
+});
+
+test('it masks sensitive values in an stringified object which has a sensitive array', t => {
+  const string = JSON.stringify({
+    data: {
+      mobileNumbers: ['1234', '5678']
+    }
+  });
+
+  const maskedString = masked(string, ['mobileNumbers']);
+
+  t.deepEqual(maskedString, JSON.stringify({
+    data: {
+      mobileNumbers: ['********', '********']
+    }
+  }));
+});
+
+test('it masked sensitive values in a stringified object (mixed)', t => {
+  const user = JSON.stringify({
+    firstName: 'jake',
+    password: 'IAmCool',
+    mobileNumbers: ['0400123123', '0411223444'],
+    providerData: [{providerNumber: '123456'}, {providerNumber: '123456'}]
+  });
+
+  const maskedString = masked(user, ['password', 'mobileNumbers', 'providerNumber']);
+
+  t.deepEqual(maskedString, JSON.stringify({
+    firstName: 'jake',
+    password: '********',
+    mobileNumbers: ['********', '********'],
+    providerData: [{providerNumber: '********'}, {providerNumber: '********'}]
+  }));
+});
