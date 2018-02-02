@@ -8,16 +8,16 @@ const _maskedString = ({length, maskChar}) => _repeat(maskChar, length);
 
 const masked = (data, keys) => {
   if (!data) {
-    throw new Error('First parameter `data` not given');
+    return null;
+  }
+  if (typeof data !== 'object') {
+    return data;
   }
   if (!keys || (!Array.isArray(keys) && typeof keys !== 'string')) {
     if (!keys) {
       throw new Error('Second parameter `keys` not given');
     }
     throw new TypeError(`Expected a string or array, got ${typeof keys}`);
-  }
-  if (typeof data !== 'object') {
-    return data;
   }
 
   if (Array.isArray(data)) {

@@ -1,9 +1,8 @@
 import test from 'ava';
 import masked from './index';
 
-test('it throws an Error when data is not given', t => {
-  const error = t.throws(() => masked(), Error);
-  t.is(error.message, 'First parameter `data` not given');
+test('it returns nothing when data is not given', t => {
+  t.true(masked() === null);
 });
 
 test('it returns the original data when data is a string', t => {
