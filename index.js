@@ -16,7 +16,7 @@ const _parse = string => {
 };
 const _maskedString = ({length, maskChar}) => _repeat(maskChar, length);
 
-const masked = (data, keys) => {
+const masked = (data, keys, {omitKeys} = {}) => {
   if (!data) {
     return null;
   }
@@ -36,19 +36,27 @@ const masked = (data, keys) => {
       if (typeof newData !== 'object') {
         return newData;
       }
-      return masked(newData, keys);
+      return masked(newData, keys, {omitKeys});
     });
   } else {
     newData = {...newData};
     _forOwn(newData, (value, key) => {
       if (typeof value === 'object') {
         if (Array.isArray(value) && Array.isArray(keys) && keys.includes(key)) {
-          newData[key] = value.map(() => _maskedString({length: 8, maskChar: MASK_CHAR}));
+          if (omitKeys) {
+            delete newData[key];
+          } else {
+            newData[key] = value.map(() => _maskedString({length: 8, maskChar: MASK_CHAR}));
+          }
         } else {
-          newData[key] = masked(value, keys);
+          newData[key] = masked(value, keys, {omitKeys});
         }
       } else if (key === keys || (Array.isArray(keys) && keys.includes(key))) {
-        newData[key] = _maskedString({length: 8, maskChar: MASK_CHAR});
+        if (omitKeys) {
+          delete newData[key];
+        } else {
+          newData[key] = _maskedString({length: 8, maskChar: MASK_CHAR});
+        }
       }
     });
   }

@@ -39,7 +39,7 @@ and [here](https://github.com/jxom/masked/blob/master/test.js)
 
 ## API
 
-### masked(data, keys)
+### masked(data, keys[, opts])
 
 #### data
 
@@ -52,6 +52,16 @@ The data that you want to mask.
 Type: `string` or `Array`
 
 The sensitive keys in your `data`.
+
+#### opts
+
+##### omitKeys
+
+Type: `boolean`
+
+Default value: `false`
+
+If `true`, it will omit the keys completely from the data.
 
 
 ## License

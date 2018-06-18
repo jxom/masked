@@ -39,6 +39,17 @@ test('it masks sensitive values in an object (one key)', t => {
   t.deepEqual(maskedObject, {username: 'jake', password: '********'});
 });
 
+test('it masks sensitive values in an object (one key and omitKeys is true)', t => {
+  const object = {
+    username: 'jake',
+    password: 'UnicornsAreAwesome'
+  };
+
+  const maskedObject = masked(object, 'password', {omitKeys: true});
+
+  t.deepEqual(maskedObject, {username: 'jake'});
+});
+
 test('it masks sensitive values in an array (one key)', t => {
   const array = [{
     username: 'jake',
@@ -59,6 +70,24 @@ test('it masks sensitive values in an array (one key)', t => {
   }]);
 });
 
+test('it masks sensitive values in an array (one key and omitKeys is true)', t => {
+  const array = [{
+    username: 'jake',
+    password: 'UnicornsAreAwesome'
+  }, {
+    username: 'richard',
+    password: 'LitAF'
+  }];
+
+  const maskedArray = masked(array, 'password', {omitKeys: true});
+
+  t.deepEqual(maskedArray, [{
+    username: 'jake'
+  }, {
+    username: 'richard'
+  }]);
+});
+
 test('it masks sensitive values in an object (multiple keys)', t => {
   const object = {
     username: 'jake',
@@ -68,6 +97,17 @@ test('it masks sensitive values in an object (multiple keys)', t => {
 
   const maskedObject = masked(object, ['password', 'mobile']);
   t.deepEqual(maskedObject, {username: 'jake', password: '********', mobile: '********'});
+});
+
+test('it masks sensitive values in an object (multiple keys and omitKeys is true)', t => {
+  const object = {
+    username: 'jake',
+    password: 'UnicornsAreAwesome',
+    mobile: '1800-YOU-WISH'
+  };
+
+  const maskedObject = masked(object, ['password', 'mobile'], {omitKeys: true});
+  t.deepEqual(maskedObject, {username: 'jake'});
 });
 
 test('it masks sensitive values in an array (multiple keys)', t => {
@@ -94,6 +134,26 @@ test('it masks sensitive values in an array (multiple keys)', t => {
   }]);
 });
 
+test('it masks sensitive values in an array (multiple keys and omitKeys is true)', t => {
+  const array = [{
+    username: 'jake',
+    password: 'UnicornsAreAwesome',
+    mobile: '1800-YOU-WISH'
+  }, {
+    username: 'richard',
+    password: 'LitAF',
+    mobile: '1800-GET-LIT'
+  }];
+
+  const maskedArray = masked(array, ['password', 'mobile'], {omitKeys: true});
+
+  t.deepEqual(maskedArray, [{
+    username: 'jake'
+  }, {
+    username: 'richard'
+  }]);
+});
+
 test('it masks sensitive values in an object (one key, 2nd level)', t => {
   const object = {
     someKey: 'someVal',
@@ -110,6 +170,25 @@ test('it masks sensitive values in an object (one key, 2nd level)', t => {
     user: {
       username: 'jake',
       password: '********'
+    }
+  });
+});
+
+test('it masks sensitive values in an object (one key, 2nd level, omitKeys is true)', t => {
+  const object = {
+    someKey: 'someVal',
+    user: {
+      username: 'jake',
+      password: 'UnicornsAreAwesome'
+    }
+  };
+
+  const maskedObject = masked(object, 'password', {omitKeys: true});
+
+  t.deepEqual(maskedObject, {
+    someKey: 'someVal',
+    user: {
+      username: 'jake'
     }
   });
 });
@@ -134,6 +213,24 @@ test('it masks sensitive values in an array (one key, 2nd level)', t => {
   }]]);
 });
 
+test('it masks sensitive values in an array (one key, 2nd level, omitKeys is true)', t => {
+  const array = [['wow', {
+    username: 'jake',
+    password: 'UnicornsAreAwesome'
+  }], ['test', {
+    username: 'richard',
+    password: 'LitAF'
+  }]];
+
+  const maskedArray = masked(array, 'password', {omitKeys: true});
+
+  t.deepEqual(maskedArray, [['wow', {
+    username: 'jake'
+  }], ['test', {
+    username: 'richard'
+  }]]);
+});
+
 test('it masks sensitive values in an object (multiple keys, 2nd level)', t => {
   const object = {
     someKey: 'someVal',
@@ -152,6 +249,26 @@ test('it masks sensitive values in an object (multiple keys, 2nd level)', t => {
       username: 'jake',
       password: '********',
       mobile: '********'
+    }
+  });
+});
+
+test('it masks sensitive values in an object (multiple keys, 2nd level, omitKeys is true)', t => {
+  const object = {
+    someKey: 'someVal',
+    user: {
+      username: 'jake',
+      password: 'UnicornsAreAwesome',
+      mobile: '1800-YOU-WISH'
+    }
+  };
+
+  const maskedObject = masked(object, ['password', 'mobile'], {omitKeys: true});
+
+  t.deepEqual(maskedObject, {
+    someKey: 'someVal',
+    user: {
+      username: 'jake'
     }
   });
 });
@@ -178,6 +295,30 @@ test('it masks sensitive values in an object (multiple keys, complex)', t => {
         password: '********'
       },
       mobile: '********'
+    }
+  });
+});
+
+test('it masks sensitive values in an object (multiple keys, complex, omitKeys is true)', t => {
+  const object = {
+    someKey: 'someVal',
+    user: {
+      data: {
+        username: 'jake',
+        password: 'UnicornsAreAwesome'
+      },
+      mobile: '1800-YOU-WISH'
+    }
+  };
+
+  const maskedObject = masked(object, ['password', 'mobile'], {omitKeys: true});
+
+  t.deepEqual(maskedObject, {
+    someKey: 'someVal',
+    user: {
+      data: {
+        username: 'jake'
+      }
     }
   });
 });
@@ -222,6 +363,42 @@ test('it masks sensitive values in an array (multiple keys, complex)', t => {
   }, '1']]);
 });
 
+test('it masks sensitive values in an array (multiple keys, complex, omitKeys is true)', t => {
+  const array = [[{
+    user: {
+      data: {
+        username: 'jake',
+        password: 'UnicornsAreAwesome'
+      }
+    },
+    mobile: '1800-YOU-WISH'
+  }], ['test', {
+    user: {
+      data: {
+        username: 'richard',
+        password: 'lit af'
+      }
+    },
+    mobile: '1800-GET-LIT'
+  }, '1']];
+
+  const maskedArray = masked(array, ['password', 'mobile'], {omitKeys: true});
+
+  t.deepEqual(maskedArray, [[{
+    user: {
+      data: {
+        username: 'jake'
+      }
+    }
+  }], ['test', {
+    user: {
+      data: {
+        username: 'richard'
+      }
+    }
+  }, '1']]);
+});
+
 test('it masks sensitive values in an array which is in an object', t => {
   const object = {
     title: 'hello everyone',
@@ -246,6 +423,30 @@ test('it masks sensitive values in an array which is in an object', t => {
   });
 });
 
+test('it masks sensitive values in an array which is in an object (omitKeys is true)', t => {
+  const object = {
+    title: 'hello everyone',
+    data: {
+      users: [
+        {name: 'jim', password: 'im cool', mobile: '04 you wish'},
+        {name: 'jake', password: 'awesome stuff', mobile: '04 go away'}
+      ]
+    }
+  };
+
+  const maskedObject = masked(object, ['password', 'mobile'], {omitKeys: true});
+
+  t.deepEqual(maskedObject, {
+    title: 'hello everyone',
+    data: {
+      users: [
+        {name: 'jim'},
+        {name: 'jake'}
+      ]
+    }
+  });
+});
+
 test('it masks sensitive values in an object which has a sensitive array', t => {
   const object = {
     data: {
@@ -259,6 +460,20 @@ test('it masks sensitive values in an object which has a sensitive array', t => 
     data: {
       mobileNumbers: ['********', '********']
     }
+  });
+});
+
+test('it masks sensitive values in an object which has a sensitive array (omitKeys is true)', t => {
+  const object = {
+    data: {
+      mobileNumbers: ['1234', '5678']
+    }
+  };
+
+  const maskedObject = masked(object, ['mobileNumbers'], {omitKeys: true});
+
+  t.deepEqual(maskedObject, {
+    data: {}
   });
 });
 
@@ -280,6 +495,22 @@ test('it masked sensitive values (mixed)', t => {
   });
 });
 
+test('it masked sensitive values (mixed, omitKeys is true)', t => {
+  const user = {
+    firstName: 'jake',
+    password: 'IAmCool',
+    mobileNumbers: ['0400123123', '0411223444'],
+    providerData: [{providerNumber: '123456'}, {providerNumber: '123456'}]
+  };
+
+  const maskedObject = masked(user, ['password', 'mobileNumbers', 'providerNumber'], {omitKeys: true});
+
+  t.deepEqual(maskedObject, {
+    firstName: 'jake',
+    providerData: [{}, {}]
+  });
+});
+
 test('it masks sensitive values in a stringified object', t => {
   const string = JSON.stringify({
     data: {
@@ -296,6 +527,24 @@ test('it masks sensitive values in a stringified object', t => {
       username: 'jake',
       password: '********',
       email: '********'
+    }
+  }));
+});
+
+test('it masks sensitive values in a stringified object (omitKeys is true)', t => {
+  const string = JSON.stringify({
+    data: {
+      username: 'jake',
+      password: 'test',
+      email: 'jake@medipass.io'
+    }
+  });
+
+  const maskedString = masked(string, ['email', 'password'], {omitKeys: true});
+
+  t.deepEqual(maskedString, JSON.stringify({
+    data: {
+      username: 'jake'
     }
   }));
 });
